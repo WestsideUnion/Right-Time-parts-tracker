@@ -13,8 +13,8 @@
 -- You can find them in Authentication > Users in the Supabase Dashboard
 DO $$
 DECLARE
-    boss_user_id UUID := '5258d27d-d08c-4521-9e35-a7eefedaa9a6'; -- Replace with actual boss user ID
-    staff_user_id UUID := '22325eff-dfb4-4d70-8ad2-d0c399d5768e'; -- Replace with actual staff user ID
+    boss_user_id UUID := 'BOSS UUID'; -- Replace with actual boss user ID
+    staff_user_id UUID := 'STAFF UUID'; -- Replace with actual staff user ID
     request1_id UUID;
     request2_id UUID;
 BEGIN
