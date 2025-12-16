@@ -44,7 +44,7 @@ export default function LoginPage() {
                         alt="Tibor's Right Time"
                         width={100}
                         height={100}
-                        className="mx-auto mb-4"
+                        className="mx-auto mb-4 brightness-0 invert"
                     />
                     <h1 className="text-2xl font-bold text-white">Right Time Parts Tracker</h1>
                     <p className="text-slate-400 mt-2">Sign in to continue</p>

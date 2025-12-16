@@ -72,7 +72,7 @@ export default function Navigation({ userRole }: NavigationProps) {
                                 alt="Tibor's Right Time"
                                 width={40}
                                 height={40}
-                                className="object-contain"
+                                className="object-contain brightness-0 invert"
                             />
                             <span className="text-white font-semibold text-lg hidden sm:block">
                                 Parts Tracker
