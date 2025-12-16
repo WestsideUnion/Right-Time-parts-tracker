@@ -1,10 +1,10 @@
 // Database types for Right Time Parts Tracker
 
-export type UserRole = 'staff' | 'boss';
+export type UserRole = 'staff' | 'boss' | 'system_admin';
 
 export type BossStatus = 'ordered' | 'backorder' | 'discontinued' | null;
 
-export type StaffStatus = 'received' | 'part_defective' | null;
+export type StaffStatus = 'received' | 'part_defective' | 'installed' | null;
 
 export interface UserRoleRecord {
   id: string;

@@ -56,9 +56,10 @@ export default function Navigation({ userRole }: NavigationProps) {
 
     const bossLinks = [
         { href: '/pick-list', label: 'Pick List' },
+        { href: '/new-request', label: 'New Request' },
     ];
 
-    const links = role === 'boss' ? [...bossLinks, ...staffLinks] : staffLinks;
+    const links = (role === 'boss' || role === 'system_admin') ? bossLinks : staffLinks;
 
     return (
         <nav className="bg-slate-900 border-b border-slate-700">

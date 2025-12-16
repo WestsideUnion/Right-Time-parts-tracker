@@ -22,6 +22,7 @@ const staffOptions: { value: string | null; label: string; color: string }[] = [
     { value: null, label: 'Pending', color: 'bg-slate-600' },
     { value: 'received', label: 'Received', color: 'bg-green-600' },
     { value: 'part_defective', label: 'Part Defective', color: 'bg-orange-600' },
+    { value: 'installed', label: 'Installed', color: 'bg-emerald-600' },
 ];
 
 export default function StatusDropdown({

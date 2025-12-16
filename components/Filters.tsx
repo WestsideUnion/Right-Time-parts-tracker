@@ -132,6 +132,7 @@ export default function Filters({
                             <option value="">Pending</option>
                             <option value="received">Received</option>
                             <option value="part_defective">Part Defective</option>
+                            <option value="installed">Installed</option>
                         </select>
                     </div>
 
