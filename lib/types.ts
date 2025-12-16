@@ -33,6 +33,7 @@ export interface RequestItem {
   created_by: string;
   created_at: string;
   updated_at: string;
+  installed_at?: string;
 }
 
 export interface RequestItemWithRequest extends RequestItem {

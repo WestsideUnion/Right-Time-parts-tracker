@@ -115,10 +115,20 @@ export async function updateStaffStatus(itemId: string, newStatus: StaffStatus) 
         throw new Error('Cannot update discontinued items');
     }
 
-    // Update status
+    // Update status and installed_at
+    const updateData: { staff_status: StaffStatus; installed_at?: string | null } = {
+        staff_status: newStatus,
+    };
+
+    if (newStatus === 'installed') {
+        updateData.installed_at = new Date().toISOString();
+    } else {
+        updateData.installed_at = null; // Reset if changing away from installed
+    }
+
     const { error: updateError } = await supabase
         .from('request_items')
-        .update({ staff_status: newStatus })
+        .update(updateData)
         .eq('id', itemId);
 
     if (updateError) {

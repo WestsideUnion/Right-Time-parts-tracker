@@ -26,7 +26,19 @@ export default function ReceivingPage() {
             .order('created_at', { ascending: false });
 
         if (!error && data) {
-            setItems(data);
+            // Filter out items that indicate 'installed' > 3 days ago
+            const threeDaysAgo = new Date();
+            threeDaysAgo.setDate(threeDaysAgo.getDate() - 3);
+
+            const filteredAndSortedData = data.filter((item) => {
+                if (item.staff_status === 'installed' && item.installed_at) {
+                    const installedDate = new Date(item.installed_at);
+                    return installedDate > threeDaysAgo;
+                }
+                return true;
+            });
+
+            setItems(filteredAndSortedData);
         }
         setIsLoading(false);
     };
