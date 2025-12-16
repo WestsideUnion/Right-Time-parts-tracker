@@ -121,12 +121,17 @@ export default function LoginPage() {
                     </form>
                 </div>
 
-                {/* Demo credentials hint */}
+                {/* Developer Credit */}
                 <div className="mt-6 text-center text-sm text-slate-500">
-                    <p>Demo accounts:</p>
-                    <p className="mt-1">
-                        <code className="text-slate-400">boss@example.com</code> or{' '}
-                        <code className="text-slate-400">staff@example.com</code>
+                    <p>
+                        Developed by Jacky Ho (<a
+                            href="https://www.westside-union.com"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-slate-400 hover:text-blue-400 transition-colors"
+                        >
+                            Westside Union Corp.
+                        </a>)
                     </p>
                 </div>
             </div>

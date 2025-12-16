@@ -15,13 +15,15 @@ DO $$
 DECLARE
     boss_user_id UUID := 'BOSS UUID'; -- Replace with actual boss user ID
     staff_user_id UUID := 'STAFF UUID'; -- Replace with actual staff user ID
+    system_admin_user_id UUID := 'SYSTEM_ADMIN_UUID'; -- Replace with actual system admin user ID
     request1_id UUID;
     request2_id UUID;
 BEGIN
     -- Insert user roles
     INSERT INTO user_roles (user_id, role) VALUES 
         (boss_user_id, 'boss'),
-        (staff_user_id, 'staff')
+        (staff_user_id, 'staff'),
+        (system_admin_user_id, 'system_admin')
     ON CONFLICT (user_id) DO NOTHING;
 
     -- Create sample requests

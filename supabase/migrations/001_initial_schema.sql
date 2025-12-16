@@ -6,8 +6,8 @@ CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
 -- Create enum types for statuses
 CREATE TYPE boss_status_enum AS ENUM ('ordered', 'backorder', 'discontinued');
-CREATE TYPE staff_status_enum AS ENUM ('received', 'part_defective');
-CREATE TYPE user_role_enum AS ENUM ('staff', 'boss');
+CREATE TYPE staff_status_enum AS ENUM ('received', 'part_defective', 'installed');
+CREATE TYPE user_role_enum AS ENUM ('staff', 'boss', 'system_admin');
 
 -- User Roles table - maps auth users to application roles
 CREATE TABLE user_roles (
