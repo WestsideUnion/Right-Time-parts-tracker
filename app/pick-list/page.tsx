@@ -120,6 +120,62 @@ export default function PickListPage() {
         }
     };
 
+    const handleExportCSV = () => {
+        // Filter for pending items (boss_status is null or empty)
+        let itemsToExport = items.filter((item) => !item.boss_status);
+
+        // If items are selected, filter the pending list to only include selected ones
+        if (selectedIds.length > 0) {
+            itemsToExport = itemsToExport.filter((item) => selectedIds.includes(item.id));
+        }
+
+        if (itemsToExport.length === 0) {
+            alert('No pending items found to export.');
+            return;
+        }
+
+        // Define headers
+        const headers = [
+            'Job Bag',
+            'Manufacturer',
+            'Part Name',
+            'Description',
+            'Quantity',
+            'Boss Status',
+            'Staff Status',
+            'Created At'
+        ];
+
+        // Map items to rows
+        const rows = itemsToExport.map((item) => [
+            item.job_bag_number,
+            item.manufacturer,
+            item.part_name,
+            `"${(item.description || '').replace(/"/g, '""')}"`, // Escape quotes
+            item.quantity,
+            item.boss_status || 'Pending',
+            item.staff_status || 'Pending',
+            new Date(item.created_at).toLocaleDateString()
+        ]);
+
+        // Combine headers and rows
+        const csvContent = [
+            headers.join(','),
+            ...rows.map((row) => row.join(','))
+        ].join('\n');
+
+        // Create download link
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const link = document.createElement('a');
+        const url = URL.createObjectURL(blob);
+        link.setAttribute('href', url);
+        link.setAttribute('download', `pending_items_${new Date().toISOString().split('T')[0]}.csv`);
+        link.style.visibility = 'hidden';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    };
+
     // Get unique values for filters
     const manufacturers = useMemo(
         () => [...new Set(items.map((item) => item.manufacturer))].sort(),
@@ -173,11 +229,22 @@ export default function PickListPage() {
 
             <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
                 {/* Header */}
-                <div className="mb-8">
-                    <h1 className="text-2xl font-bold text-white">Pick List</h1>
-                    <p className="text-slate-400 mt-1">
-                        Manage parts orders. Select multiple items for bulk updates.
-                    </p>
+                <div className="mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                    <div>
+                        <h1 className="text-2xl font-bold text-white">Pick List</h1>
+                        <p className="text-slate-400 mt-1">
+                            Manage parts orders. Select multiple items for bulk updates.
+                        </p>
+                    </div>
+                    <button
+                        onClick={handleExportCSV}
+                        className="inline-flex items-center gap-2 px-4 py-2 bg-slate-800 hover:bg-slate-700 text-white font-medium rounded-lg border border-slate-700 transition-colors"
+                    >
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                        </svg>
+                        Export Pending CSV
+                    </button>
                 </div>
 
                 {/* Stats */}
