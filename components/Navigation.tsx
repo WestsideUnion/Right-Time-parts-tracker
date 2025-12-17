@@ -59,7 +59,12 @@ export default function Navigation({ userRole }: NavigationProps) {
         { href: '/new-request', label: 'New Request' },
     ];
 
-    const links = (role === 'boss' || role === 'system_admin') ? bossLinks : staffLinks;
+    // System admin gets all links, boss gets bossLinks, staff gets staffLinks
+    const links = role === 'system_admin'
+        ? [{ href: '/pick-list', label: 'Pick List' }, ...staffLinks]
+        : role === 'boss'
+            ? bossLinks
+            : staffLinks;
 
     return (
         <nav className="bg-slate-900 border-b border-slate-700">
@@ -102,11 +107,13 @@ export default function Navigation({ userRole }: NavigationProps) {
                         <div className="text-sm">
                             <span className="text-slate-400">{userEmail}</span>
                             {role && (
-                                <span className={`ml-2 px-2 py-1 rounded text-xs font-medium ${role === 'boss'
-                                    ? 'bg-purple-900/50 text-purple-300 border border-purple-700'
-                                    : 'bg-blue-900/50 text-blue-300 border border-blue-700'
+                                <span className={`ml-2 px-2 py-1 rounded text-xs font-medium ${role === 'system_admin'
+                                        ? 'bg-rose-900/50 text-rose-300 border border-rose-700'
+                                        : role === 'boss'
+                                            ? 'bg-purple-900/50 text-purple-300 border border-purple-700'
+                                            : 'bg-blue-900/50 text-blue-300 border border-blue-700'
                                     }`}>
-                                    {role === 'boss' ? 'Admin' : 'Staff'}
+                                    {role === 'system_admin' ? 'System Admin' : role === 'boss' ? 'Admin' : 'Staff'}
                                 </span>
                             )}
                         </div>
@@ -157,11 +164,13 @@ export default function Navigation({ userRole }: NavigationProps) {
                             <div className="px-4 py-2 text-sm text-slate-400">
                                 {userEmail}
                                 {role && (
-                                    <span className={`ml-2 px-2 py-1 rounded text-xs font-medium ${role === 'boss'
-                                        ? 'bg-purple-900/50 text-purple-300 border border-purple-700'
-                                        : 'bg-blue-900/50 text-blue-300 border border-blue-700'
+                                    <span className={`ml-2 px-2 py-1 rounded text-xs font-medium ${role === 'system_admin'
+                                            ? 'bg-rose-900/50 text-rose-300 border border-rose-700'
+                                            : role === 'boss'
+                                                ? 'bg-purple-900/50 text-purple-300 border border-purple-700'
+                                                : 'bg-blue-900/50 text-blue-300 border border-blue-700'
                                         }`}>
-                                        {role === 'boss' ? 'Admin' : 'Staff'}
+                                        {role === 'system_admin' ? 'System Admin' : role === 'boss' ? 'Admin' : 'Staff'}
                                     </span>
                                 )}
                             </div>

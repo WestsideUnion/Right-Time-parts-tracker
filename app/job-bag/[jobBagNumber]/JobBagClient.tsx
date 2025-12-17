@@ -2,6 +2,7 @@
 
 import ItemsTable from '@/components/ItemsTable';
 import { updateBossStatus, updateStaffStatus } from '@/app/actions/status';
+import { deleteItem } from '@/app/actions/delete';
 import { RequestItem, AuditLog, UserRole, BossStatus, StaffStatus } from '@/lib/types';
 import { useState } from 'react';
 
@@ -50,6 +51,18 @@ export default function JobBagClient({ items: initialItems, auditLogs, userRole 
         }
     };
 
+    const handleDeleteItem = async (itemId: string) => {
+        // Optimistically remove from UI
+        setItems((prev) => prev.filter((item) => item.id !== itemId));
+
+        try {
+            await deleteItem(itemId);
+        } catch (error) {
+            setItems(initialItems);
+            throw error;
+        }
+    };
+
     const formatDate = (dateStr: string) => {
         return new Date(dateStr).toLocaleString();
     };
@@ -70,8 +83,9 @@ export default function JobBagClient({ items: initialItems, auditLogs, userRole 
                 <ItemsTable
                     items={items}
                     userRole={userRole}
-                    onBossStatusChange={userRole === 'boss' ? handleBossStatusChange : undefined}
-                    onStaffStatusChange={userRole === 'staff' ? handleStaffStatusChange : undefined}
+                    onBossStatusChange={userRole === 'boss' || userRole === 'system_admin' ? handleBossStatusChange : undefined}
+                    onStaffStatusChange={userRole === 'staff' || userRole === 'system_admin' ? handleStaffStatusChange : undefined}
+                    onDeleteItem={userRole === 'system_admin' ? handleDeleteItem : undefined}
                 />
             </div>
 
@@ -102,8 +116,8 @@ export default function JobBagClient({ items: initialItems, auditLogs, userRole 
                                 <div key={log.id} className="p-4 flex items-start gap-4">
                                     <div
                                         className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 ${log.field_changed === 'boss_status'
-                                                ? 'bg-purple-900/50 text-purple-400'
-                                                : 'bg-blue-900/50 text-blue-400'
+                                            ? 'bg-purple-900/50 text-purple-400'
+                                            : 'bg-blue-900/50 text-blue-400'
                                             }`}
                                     >
                                         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -119,8 +133,8 @@ export default function JobBagClient({ items: initialItems, auditLogs, userRole 
                                         <div className="flex items-center gap-2 flex-wrap">
                                             <span
                                                 className={`px-2 py-0.5 rounded text-xs font-medium ${log.field_changed === 'boss_status'
-                                                        ? 'bg-purple-900/50 text-purple-300'
-                                                        : 'bg-blue-900/50 text-blue-300'
+                                                    ? 'bg-purple-900/50 text-purple-300'
+                                                    : 'bg-blue-900/50 text-blue-300'
                                                     }`}
                                             >
                                                 {log.field_changed === 'boss_status' ? 'Boss Status' : 'Staff Status'}

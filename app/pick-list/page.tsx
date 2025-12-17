@@ -6,7 +6,8 @@ import Filters from '@/components/Filters';
 import BulkActions from '@/components/BulkActions';
 import { createClient } from '@/lib/supabase/client';
 import { updateBossStatus, bulkUpdateBossStatus } from '@/app/actions/status';
-import { RequestItem, ItemFilters, BossStatus } from '@/lib/types';
+import { deleteItem } from '@/app/actions/delete';
+import { RequestItem, ItemFilters, BossStatus, UserRole } from '@/lib/types';
 import { useEffect, useState, useMemo } from 'react';
 
 export default function PickListPage() {
@@ -14,10 +15,31 @@ export default function PickListPage() {
     const [isLoading, setIsLoading] = useState(true);
     const [filters, setFilters] = useState<ItemFilters>({});
     const [selectedIds, setSelectedIds] = useState<string[]>([]);
+    const [userRole, setUserRole] = useState<UserRole>('boss');
 
     useEffect(() => {
-        fetchItems();
+        fetchUserRoleAndItems();
     }, []);
+
+    const fetchUserRoleAndItems = async () => {
+        const supabase = createClient();
+
+        // Fetch user role
+        const { data: { user } } = await supabase.auth.getUser();
+        if (user) {
+            const { data: roleData } = await supabase
+                .from('user_roles')
+                .select('role')
+                .eq('user_id', user.id)
+                .single();
+            if (roleData) {
+                setUserRole(roleData.role as UserRole);
+            }
+        }
+
+        // Fetch items
+        await fetchItems();
+    };
 
     const fetchItems = async () => {
         const supabase = createClient();
@@ -72,6 +94,19 @@ export default function PickListPage() {
         }
     };
 
+    const handleDeleteItem = async (itemId: string) => {
+        // Optimistically remove from UI
+        setItems((prev) => prev.filter((item) => item.id !== itemId));
+
+        try {
+            await deleteItem(itemId);
+        } catch (error) {
+            console.error('Failed to delete:', error);
+            fetchItems();
+            throw error;
+        }
+    };
+
     // Get unique values for filters
     const manufacturers = useMemo(
         () => [...new Set(items.map((item) => item.manufacturer))].sort(),
@@ -121,7 +156,7 @@ export default function PickListPage() {
 
     return (
         <div className="min-h-screen bg-slate-950">
-            <Navigation userRole="boss" />
+            <Navigation userRole={userRole} />
 
             <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
                 {/* Header */}
@@ -165,9 +200,10 @@ export default function PickListPage() {
                 {/* Items Table */}
                 <ItemsTable
                     items={items}
-                    userRole="boss"
+                    userRole={userRole}
                     filters={filters}
                     onBossStatusChange={handleBossStatusChange}
+                    onDeleteItem={handleDeleteItem}
                     selectable={true}
                     selectedIds={selectedIds}
                     onSelectionChange={setSelectedIds}

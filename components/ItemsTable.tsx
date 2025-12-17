@@ -10,6 +10,7 @@ interface ItemsTableProps {
     userRole: UserRole;
     onBossStatusChange?: (itemId: string, status: string | null) => Promise<void>;
     onStaffStatusChange?: (itemId: string, status: string | null) => Promise<void>;
+    onDeleteItem?: (itemId: string) => Promise<void>;
     filters?: ItemFilters;
     selectable?: boolean;
     selectedIds?: string[];
@@ -21,6 +22,7 @@ export default function ItemsTable({
     userRole,
     onBossStatusChange,
     onStaffStatusChange,
+    onDeleteItem,
     filters = {},
     selectable = false,
     selectedIds = [],
@@ -28,6 +30,7 @@ export default function ItemsTable({
 }: ItemsTableProps) {
     const [sortField, setSortField] = useState<keyof RequestItem>('created_at');
     const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('desc');
+    const [deletingId, setDeletingId] = useState<string | null>(null);
 
     // Filter and sort items
     const filteredItems = useMemo(() => {
@@ -111,10 +114,10 @@ export default function ItemsTable({
     const SortIcon = ({ field }: { field: keyof RequestItem }) => (
         <svg
             className={`w-4 h-4 inline ml-1 transition-transform ${sortField === field
-                    ? sortDirection === 'asc'
-                        ? ''
-                        : 'rotate-180'
-                    : 'opacity-30'
+                ? sortDirection === 'asc'
+                    ? ''
+                    : 'rotate-180'
+                : 'opacity-30'
                 }`}
             fill="none"
             stroke="currentColor"
@@ -190,6 +193,11 @@ export default function ItemsTable({
                             <th className="px-4 py-3 text-left text-xs font-semibold text-slate-400 uppercase tracking-wider">
                                 Staff Status
                             </th>
+                            {userRole === 'system_admin' && (
+                                <th className="px-4 py-3 text-left text-xs font-semibold text-slate-400 uppercase tracking-wider">
+                                    Actions
+                                </th>
+                            )}
                         </tr>
                     </thead>
                     <tbody className="divide-y divide-slate-700/50">
@@ -248,6 +256,26 @@ export default function ItemsTable({
                                         isDiscontinued={item.boss_status === 'discontinued'}
                                     />
                                 </td>
+                                {userRole === 'system_admin' && (
+                                    <td className="px-4 py-3">
+                                        <button
+                                            onClick={async () => {
+                                                if (confirm('Are you sure you want to delete this item? This action cannot be undone.')) {
+                                                    setDeletingId(item.id);
+                                                    try {
+                                                        await onDeleteItem?.(item.id);
+                                                    } finally {
+                                                        setDeletingId(null);
+                                                    }
+                                                }
+                                            }}
+                                            disabled={deletingId === item.id}
+                                            className="px-3 py-1.5 text-xs font-medium text-red-400 hover:text-white hover:bg-red-600 border border-red-600 rounded-lg transition-colors disabled:opacity-50"
+                                        >
+                                            {deletingId === item.id ? 'Deleting...' : 'Delete'}
+                                        </button>
+                                    </td>
+                                )}
                             </tr>
                         ))}
                     </tbody>
@@ -316,6 +344,24 @@ export default function ItemsTable({
                                     isDiscontinued={item.boss_status === 'discontinued'}
                                 />
                             </div>
+                            {userRole === 'system_admin' && (
+                                <button
+                                    onClick={async () => {
+                                        if (confirm('Are you sure you want to delete this item?')) {
+                                            setDeletingId(item.id);
+                                            try {
+                                                await onDeleteItem?.(item.id);
+                                            } finally {
+                                                setDeletingId(null);
+                                            }
+                                        }
+                                    }}
+                                    disabled={deletingId === item.id}
+                                    className="px-3 py-1.5 text-xs font-medium text-red-400 hover:text-white hover:bg-red-600 border border-red-600 rounded-lg transition-colors disabled:opacity-50"
+                                >
+                                    {deletingId === item.id ? 'Deleting...' : 'Delete'}
+                                </button>
+                            )}
                         </div>
                     </div>
                 ))}

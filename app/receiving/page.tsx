@@ -5,7 +5,8 @@ import ItemsTable from '@/components/ItemsTable';
 import Filters from '@/components/Filters';
 import { createClient } from '@/lib/supabase/client';
 import { updateStaffStatus } from '@/app/actions/status';
-import { RequestItem, ItemFilters } from '@/lib/types';
+import { deleteItem } from '@/app/actions/delete';
+import { RequestItem, ItemFilters, UserRole } from '@/lib/types';
 import { useEffect, useState, useMemo } from 'react';
 import Link from 'next/link';
 
@@ -13,10 +14,31 @@ export default function ReceivingPage() {
     const [items, setItems] = useState<RequestItem[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [filters, setFilters] = useState<ItemFilters>({});
+    const [userRole, setUserRole] = useState<UserRole>('staff');
 
     useEffect(() => {
-        fetchItems();
+        fetchUserRoleAndItems();
     }, []);
+
+    const fetchUserRoleAndItems = async () => {
+        const supabase = createClient();
+
+        // Fetch user role
+        const { data: { user } } = await supabase.auth.getUser();
+        if (user) {
+            const { data: roleData } = await supabase
+                .from('user_roles')
+                .select('role')
+                .eq('user_id', user.id)
+                .single();
+            if (roleData) {
+                setUserRole(roleData.role as UserRole);
+            }
+        }
+
+        // Fetch items
+        await fetchItems();
+    };
 
     const fetchItems = async () => {
         const supabase = createClient();
@@ -63,6 +85,19 @@ export default function ReceivingPage() {
         }
     };
 
+    const handleDeleteItem = async (itemId: string) => {
+        // Optimistically remove from UI
+        setItems((prev) => prev.filter((item) => item.id !== itemId));
+
+        try {
+            await deleteItem(itemId);
+        } catch (error) {
+            console.error('Failed to delete:', error);
+            fetchItems();
+            throw error;
+        }
+    };
+
     // Get unique values for filters
     const manufacturers = useMemo(
         () => [...new Set(items.map((item) => item.manufacturer))].sort(),
@@ -80,7 +115,7 @@ export default function ReceivingPage() {
     if (isLoading) {
         return (
             <div className="min-h-screen bg-slate-950">
-                <Navigation userRole="staff" />
+                <Navigation userRole={userRole} />
                 <div className="flex items-center justify-center h-[60vh]">
                     <div className="text-center">
                         <svg
@@ -111,7 +146,7 @@ export default function ReceivingPage() {
 
     return (
         <div className="min-h-screen bg-slate-950">
-            <Navigation userRole="staff" />
+            <Navigation userRole={userRole} />
 
             <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
                 {/* Header */}
@@ -166,9 +201,10 @@ export default function ReceivingPage() {
                 {/* Items Table */}
                 <ItemsTable
                     items={items}
-                    userRole="staff"
+                    userRole={userRole}
                     filters={filters}
                     onStaffStatusChange={handleStaffStatusChange}
+                    onDeleteItem={handleDeleteItem}
                 />
             </main>
         </div>
