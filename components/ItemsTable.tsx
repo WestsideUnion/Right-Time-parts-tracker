@@ -152,7 +152,7 @@ export default function ItemsTable({
     return (
         <div className="bg-slate-800/50 rounded-xl border border-slate-700 overflow-visible">
             {/* Desktop Table */}
-            <div className="hidden lg:block overflow-x-auto">
+            <div className="hidden lg:block">
                 <table className="w-full">
                     <thead>
                         <tr className="border-b border-slate-700 bg-slate-900/50">
