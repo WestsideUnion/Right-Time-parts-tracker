@@ -1,12 +1,14 @@
 'use client';
 
-import { BossStatus } from '@/lib/types';
+import { BossStatus, UserRole } from '@/lib/types';
 import { useState, useRef, useEffect } from 'react';
 
 interface BulkActionsProps {
     selectedCount: number;
     onBulkUpdate: (status: BossStatus) => Promise<void>;
+    onBulkDelete?: () => Promise<void>;
     onClearSelection: () => void;
+    userRole?: UserRole;
 }
 
 const statusOptions: { value: BossStatus; label: string; color: string }[] = [
@@ -18,10 +20,13 @@ const statusOptions: { value: BossStatus; label: string; color: string }[] = [
 export default function BulkActions({
     selectedCount,
     onBulkUpdate,
+    onBulkDelete,
     onClearSelection,
+    userRole,
 }: BulkActionsProps) {
     const [isOpen, setIsOpen] = useState(false);
     const [isUpdating, setIsUpdating] = useState(false);
+    const [isDeleting, setIsDeleting] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
@@ -45,6 +50,19 @@ export default function BulkActions({
         }
     };
 
+    const handleDelete = async () => {
+        if (!onBulkDelete) return;
+        if (!confirm(`Are you sure you want to delete ${selectedCount} items? This cannot be undone.`)) {
+            return;
+        }
+        setIsDeleting(true);
+        try {
+            await onBulkDelete();
+        } finally {
+            setIsDeleting(false);
+        }
+    };
+
     if (selectedCount === 0) return null;
 
     return (
@@ -64,7 +82,7 @@ export default function BulkActions({
                 <div className="relative" ref={dropdownRef}>
                     <button
                         onClick={() => setIsOpen(!isOpen)}
-                        disabled={isUpdating}
+                        disabled={isUpdating || isDeleting}
                         className={`
               px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg
               font-medium text-sm flex items-center gap-2 transition-colors
@@ -98,6 +116,32 @@ export default function BulkActions({
                     )}
                 </div>
 
+                {/* Bulk Delete Button for System Admin */}
+                {userRole === 'system_admin' && onBulkDelete && (
+                    <button
+                        onClick={handleDelete}
+                        disabled={isDeleting || isUpdating}
+                        className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg font-medium text-sm flex items-center gap-2 transition-colors disabled:opacity-50"
+                    >
+                        {isDeleting ? (
+                            <>
+                                <svg className="animate-spin h-4 w-4" viewBox="0 0 24 24">
+                                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
+                                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                                </svg>
+                                Deleting...
+                            </>
+                        ) : (
+                            <>
+                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                </svg>
+                                Delete
+                            </>
+                        )}
+                    </button>
+                )}
+
                 <button
                     onClick={onClearSelection}
                     className="p-2 text-slate-400 hover:text-white hover:bg-slate-700 rounded-lg transition-colors"
@@ -111,3 +155,4 @@ export default function BulkActions({
         </div>
     );
 }
+

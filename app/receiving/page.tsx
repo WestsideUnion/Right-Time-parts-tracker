@@ -5,7 +5,7 @@ import ItemsTable from '@/components/ItemsTable';
 import Filters from '@/components/Filters';
 import { createClient } from '@/lib/supabase/client';
 import { updateStaffStatus } from '@/app/actions/status';
-import { deleteItem } from '@/app/actions/delete';
+import { deleteItem, bulkDeleteItems } from '@/app/actions/delete';
 import { RequestItem, ItemFilters, UserRole } from '@/lib/types';
 import { useEffect, useState, useMemo } from 'react';
 import Link from 'next/link';
@@ -15,6 +15,8 @@ export default function ReceivingPage() {
     const [isLoading, setIsLoading] = useState(true);
     const [filters, setFilters] = useState<ItemFilters>({});
     const [userRole, setUserRole] = useState<UserRole>('staff');
+    const [selectedIds, setSelectedIds] = useState<string[]>([]);
+    const [isBulkDeleting, setIsBulkDeleting] = useState(false);
 
     useEffect(() => {
         fetchUserRoleAndItems();
@@ -95,6 +97,28 @@ export default function ReceivingPage() {
             console.error('Failed to delete:', error);
             fetchItems();
             throw error;
+        }
+    };
+
+    const handleBulkDelete = async () => {
+        if (selectedIds.length === 0) return;
+
+        if (!confirm(`Are you sure you want to delete ${selectedIds.length} items? This cannot be undone.`)) {
+            return;
+        }
+
+        setIsBulkDeleting(true);
+        // Optimistically remove from UI
+        setItems((prev) => prev.filter((item) => !selectedIds.includes(item.id)));
+
+        try {
+            await bulkDeleteItems(selectedIds);
+            setSelectedIds([]);
+        } catch (error) {
+            console.error('Failed to bulk delete:', error);
+            fetchItems();
+        } finally {
+            setIsBulkDeleting(false);
         }
     };
 
@@ -205,7 +229,49 @@ export default function ReceivingPage() {
                     filters={filters}
                     onStaffStatusChange={handleStaffStatusChange}
                     onDeleteItem={handleDeleteItem}
+                    selectable={userRole === 'system_admin'}
+                    selectedIds={selectedIds}
+                    onSelectionChange={setSelectedIds}
                 />
+
+                {/* Bulk Delete Actions for System Admin */}
+                {userRole === 'system_admin' && selectedIds.length > 0 && (
+                    <div className="fixed bottom-6 left-1/2 transform -translate-x-1/2 z-50">
+                        <div className="bg-slate-800 border border-slate-700 rounded-xl px-6 py-4 shadow-2xl flex items-center gap-4">
+                            <span className="text-white font-medium">
+                                {selectedIds.length} item{selectedIds.length > 1 ? 's' : ''} selected
+                            </span>
+                            <button
+                                onClick={handleBulkDelete}
+                                disabled={isBulkDeleting}
+                                className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white font-medium rounded-lg transition-colors disabled:opacity-50 flex items-center gap-2"
+                            >
+                                {isBulkDeleting ? (
+                                    <>
+                                        <svg className="animate-spin h-4 w-4" viewBox="0 0 24 24">
+                                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
+                                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                                        </svg>
+                                        Deleting...
+                                    </>
+                                ) : (
+                                    <>
+                                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                        </svg>
+                                        Delete Selected
+                                    </>
+                                )}
+                            </button>
+                            <button
+                                onClick={() => setSelectedIds([])}
+                                className="px-4 py-2 text-slate-400 hover:text-white transition-colors"
+                            >
+                                Cancel
+                            </button>
+                        </div>
+                    </div>
+                )}
             </main>
         </div>
     );

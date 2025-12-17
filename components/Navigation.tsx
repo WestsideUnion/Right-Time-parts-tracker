@@ -18,6 +18,13 @@ export default function Navigation({ userRole }: NavigationProps) {
     const [userEmail, setUserEmail] = useState<string | null>(null);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
+    // Sync role state with userRole prop when it changes
+    useEffect(() => {
+        if (userRole) {
+            setRole(userRole);
+        }
+    }, [userRole]);
+
     useEffect(() => {
         const fetchUserData = async () => {
             const supabase = createClient();
@@ -108,10 +115,10 @@ export default function Navigation({ userRole }: NavigationProps) {
                             <span className="text-slate-400">{userEmail}</span>
                             {role && (
                                 <span className={`ml-2 px-2 py-1 rounded text-xs font-medium ${role === 'system_admin'
-                                        ? 'bg-rose-900/50 text-rose-300 border border-rose-700'
-                                        : role === 'boss'
-                                            ? 'bg-purple-900/50 text-purple-300 border border-purple-700'
-                                            : 'bg-blue-900/50 text-blue-300 border border-blue-700'
+                                    ? 'bg-rose-900/50 text-rose-300 border border-rose-700'
+                                    : role === 'boss'
+                                        ? 'bg-purple-900/50 text-purple-300 border border-purple-700'
+                                        : 'bg-blue-900/50 text-blue-300 border border-blue-700'
                                     }`}>
                                     {role === 'system_admin' ? 'System Admin' : role === 'boss' ? 'Admin' : 'Staff'}
                                 </span>
@@ -165,10 +172,10 @@ export default function Navigation({ userRole }: NavigationProps) {
                                 {userEmail}
                                 {role && (
                                     <span className={`ml-2 px-2 py-1 rounded text-xs font-medium ${role === 'system_admin'
-                                            ? 'bg-rose-900/50 text-rose-300 border border-rose-700'
-                                            : role === 'boss'
-                                                ? 'bg-purple-900/50 text-purple-300 border border-purple-700'
-                                                : 'bg-blue-900/50 text-blue-300 border border-blue-700'
+                                        ? 'bg-rose-900/50 text-rose-300 border border-rose-700'
+                                        : role === 'boss'
+                                            ? 'bg-purple-900/50 text-purple-300 border border-purple-700'
+                                            : 'bg-blue-900/50 text-blue-300 border border-blue-700'
                                         }`}>
                                         {role === 'system_admin' ? 'System Admin' : role === 'boss' ? 'Admin' : 'Staff'}
                                     </span>

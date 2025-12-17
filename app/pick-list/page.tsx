@@ -6,7 +6,7 @@ import Filters from '@/components/Filters';
 import BulkActions from '@/components/BulkActions';
 import { createClient } from '@/lib/supabase/client';
 import { updateBossStatus, bulkUpdateBossStatus } from '@/app/actions/status';
-import { deleteItem } from '@/app/actions/delete';
+import { deleteItem, bulkDeleteItems } from '@/app/actions/delete';
 import { RequestItem, ItemFilters, BossStatus, UserRole } from '@/lib/types';
 import { useEffect, useState, useMemo } from 'react';
 
@@ -104,6 +104,19 @@ export default function PickListPage() {
             console.error('Failed to delete:', error);
             fetchItems();
             throw error;
+        }
+    };
+
+    const handleBulkDelete = async () => {
+        // Optimistically remove from UI
+        setItems((prev) => prev.filter((item) => !selectedIds.includes(item.id)));
+
+        try {
+            await bulkDeleteItems(selectedIds);
+            setSelectedIds([]);
+        } catch (error) {
+            console.error('Failed to bulk delete:', error);
+            fetchItems();
         }
     };
 
@@ -213,7 +226,9 @@ export default function PickListPage() {
                 <BulkActions
                     selectedCount={selectedIds.length}
                     onBulkUpdate={handleBulkUpdate}
+                    onBulkDelete={handleBulkDelete}
                     onClearSelection={() => setSelectedIds([])}
+                    userRole={userRole}
                 />
             </main>
         </div>
