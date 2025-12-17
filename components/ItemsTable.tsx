@@ -150,7 +150,7 @@ export default function ItemsTable({
     }
 
     return (
-        <div className="bg-slate-800/50 rounded-xl border border-slate-700 overflow-hidden">
+        <div className="bg-slate-800/50 rounded-xl border border-slate-700 overflow-visible">
             {/* Desktop Table */}
             <div className="hidden lg:block overflow-x-auto">
                 <table className="w-full">
@@ -242,7 +242,7 @@ export default function ItemsTable({
                                         onChange={(value) =>
                                             onBossStatusChange?.(item.id, value) ?? Promise.resolve()
                                         }
-                                        disabled={userRole !== 'boss'}
+                                        disabled={userRole !== 'boss' && userRole !== 'system_admin'}
                                     />
                                 </td>
                                 <td className="px-4 py-3">
@@ -252,7 +252,7 @@ export default function ItemsTable({
                                         onChange={(value) =>
                                             onStaffStatusChange?.(item.id, value) ?? Promise.resolve()
                                         }
-                                        disabled={userRole !== 'staff'}
+                                        disabled={userRole !== 'staff' && userRole !== 'system_admin'}
                                         isDiscontinued={item.boss_status === 'discontinued'}
                                     />
                                 </td>
@@ -329,7 +329,7 @@ export default function ItemsTable({
                                     onChange={(value) =>
                                         onBossStatusChange?.(item.id, value) ?? Promise.resolve()
                                     }
-                                    disabled={userRole !== 'boss'}
+                                    disabled={userRole !== 'boss' && userRole !== 'system_admin'}
                                 />
                             </div>
                             <div className="flex items-center gap-2">
@@ -340,7 +340,7 @@ export default function ItemsTable({
                                     onChange={(value) =>
                                         onStaffStatusChange?.(item.id, value) ?? Promise.resolve()
                                     }
-                                    disabled={userRole !== 'staff'}
+                                    disabled={userRole !== 'staff' && userRole !== 'system_admin'}
                                     isDiscontinued={item.boss_status === 'discontinued'}
                                 />
                             </div>
