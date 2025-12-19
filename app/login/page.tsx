@@ -151,16 +151,7 @@ export default function LoginPage() {
 
                 {/* Developer Credit */}
                 <div className="mt-6 text-center text-sm text-slate-500">
-                    <p>
-                        Developed by Jacky Ho (<a
-                            href="https://www.westside-union.com"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-slate-400 hover:text-blue-400 transition-colors"
-                        >
-                            Westside Union Corp.
-                        </a>)
-                    </p>
+                    <p>Developed by Jacky Ho</p>
                 </div>
             </div>
         </div>
