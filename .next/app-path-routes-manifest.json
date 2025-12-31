@@ -1,0 +1,11 @@
+{
+  "/_global-error/page": "/_global-error",
+  "/_not-found/page": "/_not-found",
+  "/favicon.ico/route": "/favicon.ico",
+  "/job-bag/[jobBagNumber]/page": "/job-bag/[jobBagNumber]",
+  "/login/page": "/login",
+  "/new-request/page": "/new-request",
+  "/page": "/",
+  "/pick-list/page": "/pick-list",
+  "/receiving/page": "/receiving"
+}

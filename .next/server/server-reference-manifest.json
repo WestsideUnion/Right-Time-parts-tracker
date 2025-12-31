@@ -1,0 +1,131 @@
+{
+  "node": {
+    "60f1ae99487034e3add282dc86cabe0168420d0dfe": {
+      "workers": {
+        "app/job-bag/[jobBagNumber]/page": {
+          "moduleId": 51498,
+          "async": false,
+          "exportedName": "updateBossStatus",
+          "filename": "Documents/GitHub/Right-Time-parts-tracker/app/actions/status.ts"
+        },
+        "app/pick-list/page": {
+          "moduleId": 50390,
+          "async": false,
+          "exportedName": "updateBossStatus",
+          "filename": "Documents/GitHub/Right-Time-parts-tracker/app/actions/status.ts"
+        }
+      },
+      "layer": {
+        "app/job-bag/[jobBagNumber]/page": "action-browser",
+        "app/pick-list/page": "action-browser"
+      },
+      "filename": "Documents/GitHub/Right-Time-parts-tracker/app/actions/status.ts",
+      "exportedName": "updateBossStatus"
+    },
+    "603bc9c1796a7171c7c35f5d7b98d44b8252b48f8f": {
+      "workers": {
+        "app/job-bag/[jobBagNumber]/page": {
+          "moduleId": 51498,
+          "async": false,
+          "exportedName": "updateStaffStatus",
+          "filename": "Documents/GitHub/Right-Time-parts-tracker/app/actions/status.ts"
+        },
+        "app/receiving/page": {
+          "moduleId": 59116,
+          "async": false,
+          "exportedName": "updateStaffStatus",
+          "filename": "Documents/GitHub/Right-Time-parts-tracker/app/actions/status.ts"
+        }
+      },
+      "layer": {
+        "app/job-bag/[jobBagNumber]/page": "action-browser",
+        "app/receiving/page": "action-browser"
+      },
+      "filename": "Documents/GitHub/Right-Time-parts-tracker/app/actions/status.ts",
+      "exportedName": "updateStaffStatus"
+    },
+    "40605760b4b2861f02c3e9b7270eb1eb8b0c7420b3": {
+      "workers": {
+        "app/job-bag/[jobBagNumber]/page": {
+          "moduleId": 51498,
+          "async": false,
+          "exportedName": "deleteItem",
+          "filename": "Documents/GitHub/Right-Time-parts-tracker/app/actions/delete.ts"
+        },
+        "app/pick-list/page": {
+          "moduleId": 50390,
+          "async": false,
+          "exportedName": "deleteItem",
+          "filename": "Documents/GitHub/Right-Time-parts-tracker/app/actions/delete.ts"
+        },
+        "app/receiving/page": {
+          "moduleId": 59116,
+          "async": false,
+          "exportedName": "deleteItem",
+          "filename": "Documents/GitHub/Right-Time-parts-tracker/app/actions/delete.ts"
+        }
+      },
+      "layer": {
+        "app/job-bag/[jobBagNumber]/page": "action-browser",
+        "app/pick-list/page": "action-browser",
+        "app/receiving/page": "action-browser"
+      },
+      "filename": "Documents/GitHub/Right-Time-parts-tracker/app/actions/delete.ts",
+      "exportedName": "deleteItem"
+    },
+    "604f554f4cb3a3214ee82e25040ede4dc54e4296b8": {
+      "workers": {
+        "app/new-request/page": {
+          "moduleId": 16377,
+          "async": false,
+          "exportedName": "createRequest",
+          "filename": "Documents/GitHub/Right-Time-parts-tracker/app/actions/requests.ts"
+        }
+      },
+      "layer": {
+        "app/new-request/page": "action-browser"
+      },
+      "filename": "Documents/GitHub/Right-Time-parts-tracker/app/actions/requests.ts",
+      "exportedName": "createRequest"
+    },
+    "60aba6e1bead894c20c928b2c9507ea0a1438a7a18": {
+      "workers": {
+        "app/pick-list/page": {
+          "moduleId": 50390,
+          "async": false,
+          "exportedName": "bulkUpdateBossStatus",
+          "filename": "Documents/GitHub/Right-Time-parts-tracker/app/actions/status.ts"
+        }
+      },
+      "layer": {
+        "app/pick-list/page": "action-browser"
+      },
+      "filename": "Documents/GitHub/Right-Time-parts-tracker/app/actions/status.ts",
+      "exportedName": "bulkUpdateBossStatus"
+    },
+    "40de1e46b98bfcdbc8e66fa18ffa3a74f84d1d9fb4": {
+      "workers": {
+        "app/pick-list/page": {
+          "moduleId": 50390,
+          "async": false,
+          "exportedName": "bulkDeleteItems",
+          "filename": "Documents/GitHub/Right-Time-parts-tracker/app/actions/delete.ts"
+        },
+        "app/receiving/page": {
+          "moduleId": 59116,
+          "async": false,
+          "exportedName": "bulkDeleteItems",
+          "filename": "Documents/GitHub/Right-Time-parts-tracker/app/actions/delete.ts"
+        }
+      },
+      "layer": {
+        "app/pick-list/page": "action-browser",
+        "app/receiving/page": "action-browser"
+      },
+      "filename": "Documents/GitHub/Right-Time-parts-tracker/app/actions/delete.ts",
+      "exportedName": "bulkDeleteItems"
+    }
+  },
+  "edge": {},
+  "encryptionKey": "1rdS8nxB5WFhS/3kGLY4Ja/HQTNRae2RlTmomqYnflA="
+}

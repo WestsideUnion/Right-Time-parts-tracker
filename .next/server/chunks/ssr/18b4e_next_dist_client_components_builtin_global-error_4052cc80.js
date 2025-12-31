@@ -1,0 +1,3 @@
+module.exports=[21595,(a,b,c)=>{let{createClientModuleProxy:d}=a.r(22160);a.n(d("[project]/Documents/GitHub/Right-Time-parts-tracker/node_modules/next/dist/client/components/builtin/global-error.js <module evaluation>"))},25493,(a,b,c)=>{let{createClientModuleProxy:d}=a.r(22160);a.n(d("[project]/Documents/GitHub/Right-Time-parts-tracker/node_modules/next/dist/client/components/builtin/global-error.js"))},44820,a=>{"use strict";a.i(21595);var b=a.i(25493);a.n(b)}];
+
+//# sourceMappingURL=18b4e_next_dist_client_components_builtin_global-error_4052cc80.js.map

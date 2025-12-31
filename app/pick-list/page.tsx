@@ -9,6 +9,8 @@ import { updateBossStatus, bulkUpdateBossStatus } from '@/app/actions/status';
 import { deleteItem, bulkDeleteItems } from '@/app/actions/delete';
 import { RequestItem, ItemFilters, BossStatus, UserRole } from '@/lib/types';
 import { useEffect, useState, useMemo } from 'react';
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
 
 export default function PickListPage() {
     const [items, setItems] = useState<RequestItem[]>([]);
@@ -176,6 +178,91 @@ export default function PickListPage() {
         document.body.removeChild(link);
     };
 
+    const handleExportPDF = () => {
+        // Filter for pending items (boss_status is null or empty)
+        let itemsToExport = items.filter((item) => !item.boss_status);
+
+        // If items are selected, filter the pending list to only include selected ones
+        if (selectedIds.length > 0) {
+            itemsToExport = itemsToExport.filter((item) => selectedIds.includes(item.id));
+        }
+
+        if (itemsToExport.length === 0) {
+            alert('No pending items found to export.');
+            return;
+        }
+
+        // Create PDF document
+        const doc = new jsPDF();
+        const currentDate = new Date().toLocaleDateString();
+
+        // Add title
+        doc.setFontSize(18);
+        doc.text('Pending Items Report', 14, 22);
+
+        // Add date
+        doc.setFontSize(10);
+        doc.text(`Generated: ${currentDate}`, 14, 30);
+
+        // Define table columns
+        const columns = [
+            { header: 'Job Bag', dataKey: 'job_bag_number' },
+            { header: 'Manufacturer', dataKey: 'manufacturer' },
+            { header: 'Part Name', dataKey: 'part_name' },
+            { header: 'Description', dataKey: 'description' },
+            { header: 'Qty', dataKey: 'quantity' },
+            { header: 'Created', dataKey: 'created_at' }
+        ];
+
+        // Prepare table data
+        const tableData = itemsToExport.map((item) => ({
+            job_bag_number: item.job_bag_number,
+            manufacturer: item.manufacturer,
+            part_name: item.part_name,
+            description: item.description || '-',
+            quantity: item.quantity,
+            created_at: new Date(item.created_at).toLocaleDateString()
+        }));
+
+        // Generate table
+        autoTable(doc, {
+            columns: columns,
+            body: tableData,
+            startY: 36,
+            styles: {
+                fontSize: 9,
+                cellPadding: 3,
+            },
+            headStyles: {
+                fillColor: [51, 65, 85], // slate-700
+                textColor: [255, 255, 255],
+                fontStyle: 'bold',
+            },
+            alternateRowStyles: {
+                fillColor: [241, 245, 249], // slate-100
+            },
+            columnStyles: {
+                description: { cellWidth: 40 },
+                quantity: { cellWidth: 15, halign: 'center' },
+            },
+        });
+
+        // Add footer with item count
+        const pageCount = doc.getNumberOfPages();
+        for (let i = 1; i <= pageCount; i++) {
+            doc.setPage(i);
+            doc.setFontSize(8);
+            doc.text(
+                `Total Items: ${itemsToExport.length} | Page ${i} of ${pageCount}`,
+                14,
+                doc.internal.pageSize.height - 10
+            );
+        }
+
+        // Save the PDF
+        doc.save(`pending_items_${new Date().toISOString().split('T')[0]}.pdf`);
+    };
+
     // Get unique values for filters
     const manufacturers = useMemo(
         () => [...new Set(items.map((item) => item.manufacturer))].sort(),
@@ -236,15 +323,26 @@ export default function PickListPage() {
                             Manage parts orders. Select multiple items for bulk updates.
                         </p>
                     </div>
-                    <button
-                        onClick={handleExportCSV}
-                        className="inline-flex items-center gap-2 px-4 py-2 bg-slate-800 hover:bg-slate-700 text-white font-medium rounded-lg border border-slate-700 transition-colors"
-                    >
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-                        </svg>
-                        Export Pending CSV
-                    </button>
+                    <div className="flex gap-2">
+                        <button
+                            onClick={handleExportCSV}
+                            className="inline-flex items-center gap-2 px-4 py-2 bg-slate-800 hover:bg-slate-700 text-white font-medium rounded-lg border border-slate-700 transition-colors"
+                        >
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                            </svg>
+                            Export CSV
+                        </button>
+                        <button
+                            onClick={handleExportPDF}
+                            className="inline-flex items-center gap-2 px-4 py-2 bg-red-900/50 hover:bg-red-800/70 text-white font-medium rounded-lg border border-red-700 transition-colors"
+                        >
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                            </svg>
+                            Export PDF
+                        </button>
+                    </div>
                 </div>
 
                 {/* Stats */}

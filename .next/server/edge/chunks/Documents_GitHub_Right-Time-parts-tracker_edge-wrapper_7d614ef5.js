@@ -1,0 +1,3 @@
+(globalThis.TURBOPACK||(globalThis.TURBOPACK=[])).push(["chunks/Documents_GitHub_Right-Time-parts-tracker_edge-wrapper_7d614ef5.js",45908,(e,t,r)=>{self._ENTRIES||={};let h=Promise.resolve().then(()=>e.i(45658));h.catch(()=>{}),self._ENTRIES.middleware_middleware=new Proxy(h,{get(e,t){if("then"===t)return(t,r)=>e.then(t,r);let r=(...r)=>e.then(e=>(0,e[t])(...r));return r.then=(r,h)=>e.then(e=>e[t]).then(r,h),r}})}]);
+
+//# sourceMappingURL=Documents_GitHub_Right-Time-parts-tracker_edge-wrapper_7d614ef5.js.map

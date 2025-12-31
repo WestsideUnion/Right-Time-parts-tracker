@@ -1,0 +1,31 @@
+{
+  "sorted_middleware": [],
+  "middleware": {
+    "/": {
+      "files": [
+        "server/edge/chunks/Documents_GitHub_Right-Time-parts-tracker_edge-wrapper_7d614ef5.js",
+        "server/edge/chunks/[root-of-the-server]__4ecef367._.js",
+        "server/edge/chunks/turbopack-Documents_GitHub_Right-Time-parts-tracker_edge-wrapper_e7a7ffc4.js"
+      ],
+      "name": "middleware",
+      "page": "/",
+      "matchers": [
+        {
+          "regexp": "/:nextData(_next/data/[^/]{1,})?/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*){(\\\\.json)}?",
+          "originalSource": "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)"
+        }
+      ],
+      "wasm": [],
+      "assets": [],
+      "env": {
+        "__NEXT_BUILD_ID": "GcXigU1LL3N6uVx_hp8OV",
+        "NEXT_SERVER_ACTIONS_ENCRYPTION_KEY": "1rdS8nxB5WFhS/3kGLY4Ja/HQTNRae2RlTmomqYnflA=",
+        "__NEXT_PREVIEW_MODE_ID": "7f84704fcc52046b6b49d1d95197993b",
+        "__NEXT_PREVIEW_MODE_ENCRYPTION_KEY": "e83dedb1dabfc0148dcff0370bc00382b70cc20c4c110e0132e5cf0f96540a85",
+        "__NEXT_PREVIEW_MODE_SIGNING_KEY": "b7a7fa601574328efad1bd40a5029be14d4e4062efe38281826f7a2518f24963"
+      }
+    }
+  },
+  "instrumentation": null,
+  "functions": {}
+}

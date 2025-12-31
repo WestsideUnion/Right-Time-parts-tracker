@@ -1,0 +1,3 @@
+module.exports=[84178,a=>{a.v({className:"outfit_8778cd42-module__wRojWG__className",variable:"outfit_8778cd42-module__wRojWG__variable"})},45626,a=>{"use strict";var b=a.i(90582),c=a.i(84178);let d={className:c.default.className,style:{fontFamily:"'Outfit', 'Outfit Fallback'",fontStyle:"normal"}};function e({children:a}){return(0,b.jsx)("html",{lang:"en",children:(0,b.jsx)("body",{className:`${d.variable} font-sans antialiased bg-slate-950 text-white`,children:a})})}null!=c.default.variable&&(d.variable=c.default.variable),a.s(["default",()=>e,"metadata",0,{title:"Right Time Parts Tracker",description:"Internal parts request tracking system"}],45626)}];
+
+//# sourceMappingURL=%5Broot-of-the-server%5D__66a4a025._.js.map

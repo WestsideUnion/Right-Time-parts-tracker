@@ -1,0 +1,11 @@
+{
+  "/_global-error/page": "app/_global-error/page.js",
+  "/_not-found/page": "app/_not-found/page.js",
+  "/favicon.ico/route": "app/favicon.ico/route.js",
+  "/job-bag/[jobBagNumber]/page": "app/job-bag/[jobBagNumber]/page.js",
+  "/login/page": "app/login/page.js",
+  "/new-request/page": "app/new-request/page.js",
+  "/page": "app/page.js",
+  "/pick-list/page": "app/pick-list/page.js",
+  "/receiving/page": "app/receiving/page.js"
+}

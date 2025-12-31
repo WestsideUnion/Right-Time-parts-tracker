@@ -1,0 +1,20 @@
+{
+  "node": {
+    "604f554f4cb3a3214ee82e25040ede4dc54e4296b8": {
+      "workers": {
+        "app/new-request/page": {
+          "moduleId": 16377,
+          "async": false,
+          "exportedName": "createRequest",
+          "filename": "Documents/GitHub/Right-Time-parts-tracker/app/actions/requests.ts"
+        }
+      },
+      "layer": {
+        "app/new-request/page": "action-browser"
+      },
+      "exportedName": "createRequest",
+      "filename": "Documents/GitHub/Right-Time-parts-tracker/app/actions/requests.ts"
+    }
+  },
+  "edge": {}
+}

@@ -1,0 +1,28 @@
+{
+  "app": {
+    "[project]/Documents/GitHub/Right-Time-parts-tracker/app/_not-found/page": [
+      "static/media/1b99372b3eaef0c8-s.p.758e15a8.woff2"
+    ],
+    "[project]/Documents/GitHub/Right-Time-parts-tracker/app/job-bag/[jobBagNumber]/page": [
+      "static/media/1b99372b3eaef0c8-s.p.758e15a8.woff2"
+    ],
+    "[project]/Documents/GitHub/Right-Time-parts-tracker/app/login/page": [
+      "static/media/1b99372b3eaef0c8-s.p.758e15a8.woff2"
+    ],
+    "[project]/Documents/GitHub/Right-Time-parts-tracker/app/new-request/page": [
+      "static/media/1b99372b3eaef0c8-s.p.758e15a8.woff2"
+    ],
+    "[project]/Documents/GitHub/Right-Time-parts-tracker/app/page": [
+      "static/media/1b99372b3eaef0c8-s.p.758e15a8.woff2"
+    ],
+    "[project]/Documents/GitHub/Right-Time-parts-tracker/app/pick-list/page": [
+      "static/media/1b99372b3eaef0c8-s.p.758e15a8.woff2"
+    ],
+    "[project]/Documents/GitHub/Right-Time-parts-tracker/app/receiving/page": [
+      "static/media/1b99372b3eaef0c8-s.p.758e15a8.woff2"
+    ]
+  },
+  "appUsingSizeAdjust": true,
+  "pages": {},
+  "pagesUsingSizeAdjust": false
+}
